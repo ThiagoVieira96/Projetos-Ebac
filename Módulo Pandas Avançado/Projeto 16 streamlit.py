@@ -2,18 +2,15 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-# import statsmodels.formula.api as smf
 import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.tree import plot_tree
-# from sklearn.metrics import mean_squared_error
-# from ydata_profiling import ProfileReport
-# import patsy
 import streamlit as st
 from streamlit.components.v1 import components
 import os
+from ydata_profiling import ProfileReport
 
 output_folder_path = "./output"
 st.set_page_config(page_title = 'Projeto módulo 16',
@@ -83,6 +80,7 @@ renda_encoded[['posse_de_veiculo', 'posse_de_imovel', 'qtd_filhos', 'idade',
 st.sidebar.write('# Menu')
 selected_charts = st.sidebar.multiselect('Selecione os gráficos a serem exibidos', ['Gráficos ao longo do tempo', 'Gráficos bivariados'])
 
+
 # Gráficos ao longo do tempo
 if 'Gráficos ao longo do tempo' in selected_charts:
     st.write('## Gráficos ao longo do tempo')
@@ -141,33 +139,37 @@ if 'Regressão da base de dados completa' in selected_analysis:
     # Plotando gráficos de diagnóstico
     fig, ax = plt.subplots(2, 2, figsize=(12, 10))
     sm.graphics.plot_regress_exog(model, 'idade', fig=fig)
+    plt.subplots_adjust(wspace=0.5)
     for axis in ax.flatten():
-        axis.set_xticklabels(axis.get_xticklabels(), rotation=45, )
+      axis.tick_params(axis='x', labelrotation=30)
     st.pyplot(plt)
     st.markdown('------')
 
 if 'Regressão da base de dados tratada' in selected_analysis:
   X_2 = renda_encoded.drop(columns=['posse_de_veiculo', 'posse_de_imovel', 'qtd_filhos',
-        'qt_pessoas_residencia',
        'tipo_renda_Bolsista', 'tipo_renda_Servidor público',
        'educacao_Pós graduação', 'educacao_Secundário',
        'educacao_Superior completo', 'educacao_Superior incompleto',
-       'estado_civil_Separado', 'estado_civil_Solteiro', 'estado_civil_União',
        'estado_civil_Viúvo', 'tipo_residencia_Casa',
        'tipo_residencia_Com os pais', 'tipo_residencia_Comunitário',
-       'tipo_residencia_Estúdio', 'tipo_residencia_Governamental']).fillna(method='bfill').copy()
-  y_2 = renda_encoded['renda']
+       'tipo_residencia_Estúdio', 'tipo_residencia_Governamental', 'renda', 'estado_civil_Separado', 'estado_civil_Solteiro',
+       'estado_civil_União', 'qt_pessoas_residencia']).fillna(method='bfill').copy()
+  y_2 = np.log(renda_encoded['renda'])
 
   X_2_train, X_2_test, y_2_train, y_2_test = train_test_split(X_2, y_2, test_size=0.3, random_state=42)
 
   model_2 = sm.OLS(y_2_train, X_2_train).fit()
   st.write('## Regressão da base de dados tratada')
+  st.write('''Obs: Essa foi a regressão com o maior valor de r-quadrado obtido, para isso,
+           além de se descartar as colunas com p-value maiores que 5%,
+           foi aplicado o logaritmo na coluna de renda.(para mais detalhes conferir o notebook.)''')
   st.text(model_2.summary())
   
   fig, ax = plt.subplots(2, 2, figsize=(12, 10))
   sm.graphics.plot_regress_exog(model_2, 'idade', fig=fig)
+  plt.subplots_adjust(wspace=0.5)
   for axis in ax.flatten():
-    axis.set_xticklabels(axis.get_xticklabels(), rotation=45, )
+    axis.tick_params(axis='x', labelrotation=30)
   st.pyplot(plt)
   st.markdown('------')
 
@@ -207,21 +209,20 @@ if 'Árvore da base de dados tratada' in selected_analysis:
            de r-quadrado entre os valores de renda previstos e os reais.''')
   
   X_2 = renda_encoded.drop(columns=['posse_de_veiculo', 'posse_de_imovel', 'qtd_filhos',
-        'qt_pessoas_residencia',
        'tipo_renda_Bolsista', 'tipo_renda_Servidor público',
        'educacao_Pós graduação', 'educacao_Secundário',
        'educacao_Superior completo', 'educacao_Superior incompleto',
-       'estado_civil_Separado', 'estado_civil_Solteiro', 'estado_civil_União',
        'estado_civil_Viúvo', 'tipo_residencia_Casa',
        'tipo_residencia_Com os pais', 'tipo_residencia_Comunitário',
-       'tipo_residencia_Estúdio', 'tipo_residencia_Governamental']).fillna(method='bfill').copy()
-  y_2 = renda_encoded['renda']
+       'tipo_residencia_Estúdio', 'tipo_residencia_Governamental', 'renda', 'estado_civil_Separado', 'estado_civil_Solteiro',
+       'estado_civil_União', 'qt_pessoas_residencia']).fillna(method='bfill').copy()
+  y_2 = np.log(renda_encoded['renda'])
   X_2_train, X_2_test, y_2_train, y_2_test = train_test_split(X_2, y_2, test_size=0.3, random_state=42)
   
   arvore_2 = DecisionTreeRegressor(max_depth=8 ,random_state= 42)
   arvore_2.fit(X_2_train, y_2_train)
   previsao_2 = arvore_2.predict(X_2_test)
-  r_square_2 = r2_score(y_2_test,previsao_2)
+  r_square_2 = r2_score(previsao_2, y_2_test)
   
   st.markdown(f'O valor de r-quadrado obtido dela foi {r_square_2:.3f}, com uma profundidade de {arvore_2.get_depth()}')
   
