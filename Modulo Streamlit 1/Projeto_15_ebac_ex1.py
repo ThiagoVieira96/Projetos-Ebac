@@ -32,7 +32,7 @@ st.write('Este é o projeto final para o primeiro módulo de streamlit, os gráf
 
 
 
-sinasc = pd.read_csv('./input_M15_SINASC_RO_2019.csv')
+sinasc = pd.read_csv('https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Modulo%20Streamlit%201/input_M15_SINASC_RO_2019.csv')
 
 sinasc.DTNASC = pd.to_datetime(sinasc.DTNASC)
 
