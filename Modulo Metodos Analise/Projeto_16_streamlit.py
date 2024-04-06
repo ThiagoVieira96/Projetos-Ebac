@@ -51,7 +51,7 @@ st.write('''Antes de ser feita qualquer análise,
          já que só iriam atrapalhar as análises.''')
 st.markdown('------')
 
-renda = pd.read_csv('previsao_de_renda.csv')
+renda = pd.read_csv('https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Modulo%20Metodos%20Analise/previsao_de_renda.csv')
 renda_encoded = (pd.get_dummies(renda, columns=['sexo', 'tipo_renda', 'educacao', 'estado_civil', 'tipo_residencia'], drop_first=True)
                  .drop(['Unnamed: 0', 'data_ref', 'id_cliente'], axis=1)
                  .reset_index(drop=True))
