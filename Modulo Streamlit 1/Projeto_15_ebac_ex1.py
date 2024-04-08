@@ -27,7 +27,7 @@ st.set_page_config(page_title = 'SINASC Rondônia',
                     layout='wide')
 
 st.write('# Análise SINASC')
-st.write('Este é o projeto final para o primeiro módulo de streamlit, os gráficos usados aqui são os mesmos usados nas análises feitas em aula, iremos apenas adicionar funcionalidades.')
+st.write('Este é o projeto final para o primeiro módulo de streamlit adaptado para melhor visualização em uma página online. Este projeto consiste em uma análise básica sobre a base de dados SINASC do estado de ROndônia, onde serão vistas e análisadas informações relevantes sobre o nascimento de bebês no período de tempo mostrado.')
 
 
 
