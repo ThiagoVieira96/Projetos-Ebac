@@ -8,11 +8,6 @@ from sklearn import tree
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 
-
-@st.cache_data
-def convert_df(df):
-    return df.to_csv(index=False).encode('utf-8')
-
 @st.cache_data
 def std_df(df):
     var_num = ['Administrative', 'Administrative_Duration', 'Informational',
