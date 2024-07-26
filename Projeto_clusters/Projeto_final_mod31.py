@@ -111,7 +111,7 @@ def main():
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["📋 Dataframe" , "💻 Clusterização" , "📊 Tratamentos" , "💡 Análise Insights", "🏁 Conclusões"])
     st.markdown("---")
     # URL do arquivo
-    data_url = 'https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Projeto%20clusters/online_shoppers_intention.csv'
+    data_url = 'https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Projeto_clusters/online_shoppers_intention.csv'
 
     # Carregar dados diretamente do URL
     df_compras = pd.read_csv(data_url, infer_datetime_format=True)
@@ -122,9 +122,9 @@ def main():
     st.sidebar.write("""
     Esta aplicação realiza clusterização de clientes pelo perfil de compra, além da análise destes clusters.
     
-    - O arquivo de dados utilizado pode ser encontrado [aqui](https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Projeto%20clusters/online_shoppers_intention.csv).
+    - O arquivo de dados utilizado pode ser encontrado [aqui](https://raw.githubusercontent.com/ThiagoVieira96/Projetos-Ebac/main/Projeto_clusters/online_shoppers_intention.csv).
     
-    - O repositório com o código fonte desta aplicação pode ser encontrado [aqui](https://github.com/ThiagoVieira96/Projetos-Ebac/tree/main/Projeto%20clusters)
+    - O repositório com o código fonte desta aplicação pode ser encontrado [aqui](https://github.com/ThiagoVieira96/Projetos-Ebac/tree/main/Projeto_clusters)
     
     Informações adicionais 💡:
     - O gráfico do método do cotovelo foi feito usando clusterização por KMeans, uma técnica bastante simples e popular em análise de dados.
